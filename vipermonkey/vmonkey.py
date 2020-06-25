@@ -109,6 +109,7 @@ from datetime import timedelta
 import subprocess
 import zipfile
 import io
+import tempfile
 
 import prettytable
 from oletools.thirdparty.xglob import xglob
@@ -173,7 +174,7 @@ def _read_doc_text_libreoffice(data):
         return None
     
     # Save the Word data to a temporary file.
-    out_dir = "/tmp/tmp_word_file_" + str(random.randrange(0, 10000000000))
+    out_dir = os.path.join(tempfile.gettempdir(), "tmp_word_file_" + str(random.randrange(0, 10000000000)))
     f = open(out_dir, 'wb')
     f.write(data)
     f.close()
@@ -933,7 +934,7 @@ def load_excel_libreoffice(data):
         return None
     
     # Save the Excel data to a temporary file.
-    out_dir = "/tmp/tmp_excel_file_" + str(random.randrange(0, 10000000000))
+    out_dir = os.path.join(tempfile.gettempdir(), "tmp_excel_file_" + str(random.randrange(0, 10000000000)))
     f = open(out_dir, 'wb')
     f.write(data)
     f.close()
@@ -1164,7 +1165,7 @@ def _process_file (filename,
             if (only_filename is not None):
                 out_dir = artifact_dir + "/" + only_filename + "_artifacts/"
             else:
-                out_dir = "/tmp/tmp_file_" + str(random.randrange(0, 10000000000))
+                out_dir = os.path.join(tempfile.gettempdir(), "tmp_file_" + str(random.randrange(0, 10000000000)))
             log.info("Saving dropped analysis artifacts in " + out_dir)
             vba_context.out_dir = out_dir
             del filename # We already have this in memory, we don't need to read it again.
